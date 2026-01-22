@@ -1,0 +1,75 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+// ブログ記事（Markdown）をすべて取得
+const posts = await Astro.glob("./*.md");
+// 日付の新しい順にソート（frontmatterにdateがある前提）
+posts.sort((a, b) => {
+    const dateA = new Date(a.frontmatter.date || 0);
+    const dateB = new Date(b.frontmatter.date || 0);
+    return dateB.getTime() - dateA.getTime();
+});
+---
+
+<Layout title="ブログ - 5hon.com">
+    <h1>ブログ・お知らせ</h1>
+    <p class="intro">
+        5hon.comのアップデート情報や、便利な使い方を紹介します。
+    </p>
+
+    <div class="post-list">
+        {
+            posts.map((post) => (
+                <article class="post-card">
+                    <a href={post.url} class="post-link">
+                        <div class="post-date">{post.frontmatter.date}</div>
+                        <h2 class="post-title">{post.frontmatter.title}</h2>
+                        <p class="post-desc">{post.frontmatter.description}</p>
+                    </a>
+                </article>
+            ))
+        }
+    </div>
+</Layout>
+
+<style>
+    .intro {
+        margin-bottom: 3rem;
+        color: var(--muted);
+    }
+    .post-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .post-card {
+        border-bottom: 1px solid var(--color-border);
+        padding-bottom: 2rem;
+    }
+    .post-card:last-child {
+        border-bottom: none;
+    }
+    .post-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+    .post-link:hover .post-title {
+        color: var(--accent);
+    }
+    .post-date {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+    }
+    .post-title {
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+    .post-desc {
+        color: var(--text);
+        font-size: 0.95rem;
+        margin: 0;
+    }
+</style>

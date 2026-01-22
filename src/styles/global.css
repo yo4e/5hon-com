@@ -10,7 +10,6 @@
   --primary: #b4b644;
   --accent: #4591a8;
   --color-accent: var(--accent);
-  /* 変数として定義 */
 
   /* Derived & Functional Colors */
   --color-bg: var(--bg);
@@ -119,6 +118,7 @@ a {
 
 a:hover {
   text-decoration: underline;
+  color: var(--color-accent);
 }
 
 /* ===== Layout ===== */

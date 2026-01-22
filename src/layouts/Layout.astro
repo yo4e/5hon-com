@@ -1,0 +1,119 @@
+---
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="description"
+            content="5hon.com - Googleドキュメントから縦書きEPUBを生成"
+        />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+    </head>
+    <body>
+        <main class="page-content">
+            <slot />
+        </main>
+        <footer>
+            <div class="ad-placeholder">
+                <div class="ad-content">
+                    <iframe
+                        style="border-radius:12px"
+                        src="https://open.spotify.com/embed/playlist/4e30mPeoB3NrqYlj4NRIut?utm_source=generator&theme=0"
+                        width="100%"
+                        height="352"
+                        frameborder="0"
+                        allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"></iframe>
+                </div>
+                <div class="ad-pr">PR</div>
+            </div>
+            <div class="footer-links">
+                <a href="/">HOME</a>
+                <span class="separator">/</span>
+                <a href="/privacy">プライバシーポリシー</a>
+                <span class="separator">/</span>
+                <a href="/blog">ブログ</a>
+                <span class="separator">/</span>
+                <a href="/terms">利用規約</a>
+            </div>
+            <p class="copyright">&copy; 2026 5hon.com</p>
+        </footer>
+    </body>
+</html>
+
+<style>
+    .page-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin-top: 2rem;
+        line-height: 1.8;
+    }
+    footer {
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+        color: var(--muted);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .ad-placeholder {
+        margin-bottom: 2rem;
+        max-width: 360px; /* 少し狭める */
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .ad-content {
+        padding: 1rem;
+        background: white;
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        box-shadow: var(--shadow-sm);
+    }
+    .ad-pr {
+        text-align: right;
+        font-size: 0.7rem;
+        color: var(--muted);
+        margin-top: 4px;
+        margin-right: 8px;
+    }
+    .footer-links {
+        margin-bottom: 1rem;
+    }
+    footer a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: bold;
+    }
+    footer .separator {
+        margin: 0 0.5rem;
+        color: var(--muted);
+    }
+    .copyright {
+        font-size: 0.8rem;
+        color: var(--muted);
+    }
+    /* Mobile tweaks */
+    @media (max-width: 600px) {
+        .page-content {
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+    }
+</style>
