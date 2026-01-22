@@ -11,11 +11,11 @@ npm install
 npm run dev
 ```
 
-## 技術スタック
+## Tech Stack
 
-*   **Framework**: Astro (Static Site Generation), React (UI Component)
-*   **Hosting**: Cloudflare Pages
-*   **EPUB Generation**: JSZip (Cloudflare Pages Functions & Client-side)
+- **Frontend**: Vite + React + TypeScript
+- **Backend**: Cloudflare Pages Functions
+- **EPUB生成**: JSZip（手動EPUB3構造）
 
 ## Features (MVP)
 

@@ -129,3 +129,4 @@ dist/
 5hon-com@*
 npm
 tsc
+.astro/
