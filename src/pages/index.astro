@@ -292,7 +292,8 @@ import Layout from "../layouts/Layout.astro";
         };
 
         coverInput.addEventListener('change', (event) => {
-            const file = event.target.files && event.target.files[0];
+            const target = event.target as HTMLInputElement;
+            const file = target.files && target.files[0];
             setError(null);
             if (!file) {
                 coverFile = null;

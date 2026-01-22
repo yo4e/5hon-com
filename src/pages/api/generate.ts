@@ -589,7 +589,7 @@ export const POST: APIRoute = async (context) => {
             coverImage,
         })
 
-        return new Response(epub, {
+        return new Response(epub as any, {
             headers: {
                 'Content-Type': 'application/epub+zip',
                 'Content-Disposition': `attachment; filename="${encodeURIComponent(downloadFilename)}"`,
