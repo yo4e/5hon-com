@@ -60,7 +60,7 @@ const socialType = ogType ?? "website";
                         <div class="share-title">この記事をシェア</div>
                         <div class="share-container">
                             <a
-                                href={`https://bsky.app/intent/compose?text=${encodeURIComponent(title + " " + Astro.url.href)}`}
+                                href={`https://bsky.app/intent/compose?text=${encodeURIComponent(title + " | 5hon.com " + Astro.url.href)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="share-btn"
@@ -68,7 +68,7 @@ const socialType = ogType ?? "website";
                                 Bluesky
                             </a>
                             <a
-                                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(Astro.url.href)}`}
+                                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title + " | 5hon.com")}&url=${encodeURIComponent(Astro.url.href)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="share-btn"
