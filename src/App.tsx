@@ -120,7 +120,14 @@ function App() {
       setDownloadUrl(downloadUrl)
 
       // ダウンロードファイル名の生成
-      const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+      const now = new Date()
+      // YYYYMMDD_HHMMSS 形式
+      const timestamp = now.getFullYear() +
+        (now.getMonth() + 1).toString().padStart(2, '0') +
+        now.getDate().toString().padStart(2, '0') + '_' +
+        now.getHours().toString().padStart(2, '0') +
+        now.getMinutes().toString().padStart(2, '0') +
+        now.getSeconds().toString().padStart(2, '0')
       const safeTitle = (title || 'output').replace(/[\\/:*?"<>|]/g, '_')
       setDownloadFilename(`${safeTitle}_${timestamp}.epub`)
 
