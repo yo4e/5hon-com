@@ -219,6 +219,16 @@ a:hover {
   color: var(--color-text);
 }
 
+.quick-steps h2 {
+  font-size: 1.1rem;
+}
+
+.quick-steps ol,
+.quick-steps p {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
 /* ===== Form Elements ===== */
 .input-group {
   margin-bottom: var(--space-xl);
