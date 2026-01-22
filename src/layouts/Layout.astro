@@ -78,14 +78,33 @@ const socialType = ogType ?? "website";
                 // ブログ記事の場合のみシェアボタンを表示
                 Astro.url.pathname.startsWith("/blog/") && (
                     <div class="share-area">
-                        <a
-                            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(Astro.url.href)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="share-btn"
-                        >
-                            Xでシェア
-                        </a>
+                        <div class="share-title">この記事をシェア</div>
+                        <div class="share-container">
+                            <a
+                                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(Astro.url.href)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="share-btn"
+                            >
+                                X
+                            </a>
+                            <a
+                                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="share-btn"
+                            >
+                                Facebook
+                            </a>
+                            <a
+                                href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(Astro.url.href)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="share-btn"
+                            >
+                                LINE
+                            </a>
+                        </div>
                     </div>
                 )
             }
@@ -145,21 +164,44 @@ const socialType = ogType ?? "website";
     }
     .share-area {
         margin-bottom: 2rem;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .share-title {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+    .share-container {
+        background: white;
+        padding: 1rem;
+        border-radius: 12px;
+        border: 1px solid var(--color-border);
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        box-shadow: var(--shadow-sm);
     }
     .share-btn {
-        display: inline-block;
-        padding: 0.5rem 1.5rem;
-        background: black;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.4rem 1rem;
+        background: var(--color-primary); /* 抹茶カラー */
         color: white !important;
         border-radius: 999px;
-        font-size: 0.9rem;
+        font-size: 0.8rem; /* 小さく */
         text-decoration: none;
         font-weight: bold;
         transition: opacity 0.2s;
+        min-width: 80px;
     }
     .share-btn:hover {
         opacity: 0.8;
         text-decoration: none;
+        color: white !important; /* ホバー時も白文字 */
     }
     .footer-links {
         margin-bottom: 1rem;
