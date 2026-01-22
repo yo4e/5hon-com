@@ -60,6 +60,14 @@ const socialType = ogType ?? "website";
                         <div class="share-title">この記事をシェア</div>
                         <div class="share-container">
                             <a
+                                href={`https://bsky.app/intent/compose?text=${encodeURIComponent(title + " " + Astro.url.href)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="share-btn"
+                            >
+                                Bluesky
+                            </a>
+                            <a
                                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(Astro.url.href)}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -164,10 +172,12 @@ const socialType = ogType ?? "website";
         margin-right: 8px;
     }
     .share-area {
+        margin-top: 3rem;
         margin-bottom: 2rem;
-        max-width: 400px;
-        margin-left: auto;
-        margin-right: auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
     }
     .share-title {
         font-size: 0.8rem;
@@ -176,14 +186,9 @@ const socialType = ogType ?? "website";
         font-weight: bold;
     }
     .share-container {
-        background: white;
-        padding: 1rem;
-        border-radius: 12px;
-        border: 1px solid var(--color-border);
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         gap: 0.5rem;
-        box-shadow: var(--shadow-sm);
     }
     .share-btn {
         display: inline-flex;
