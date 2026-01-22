@@ -391,7 +391,8 @@ function App() {
                   <p style={{ marginTop: '1rem', borderTop: '1px dashed #ccc', paddingTop: '0.5rem', fontSize: '0.9em' }}>
                     <strong>推奨環境：</strong><br />
                     iPhone / iPad / Mac の「Apple Books」または「ブック」アプリ。<br />
-                    ※GooglePlay Books、Kindle等ではレイアウトが崩れる可能性があります。
+                    ※ブラウザは <strong>Safari</strong> または <strong>Chrome</strong> を推奨します。Googleアプリなどの内蔵ブラウザではダウンロードがうまくいかない場合があります。<br />
+                    ※iPhoneの場合、ダウンロードしたファイルは「ファイル」アプリの「ダウンロード」フォルダに保存されます。
                   </p>
                 </div>
               </div>
