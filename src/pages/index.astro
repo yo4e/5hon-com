@@ -241,29 +241,29 @@ import Layout from "../layouts/Layout.astro";
         })}
     </script>
     <script>
-        const urlInput = document.getElementById('doc-url');
-        const titleInput = document.getElementById('book-title');
-        const authorInput = document.getElementById('book-author');
-        const issuerInput = document.getElementById('book-issuer');
-        const dateInput = document.getElementById('book-date');
-        const publisherInput = document.getElementById('book-publisher');
-        const colophonInput = document.getElementById('book-colophon');
-        const tcyNumbersInput = document.getElementById('opt-tcy-numbers');
-        const tcyLatinInput = document.getElementById('opt-tcy-latin');
-        const tocInput = document.getElementById('opt-toc');
-        const coverInput = document.getElementById('cover-file');
-        const coverPreview = document.getElementById('cover-preview');
-        const coverPlaceholder = document.getElementById('cover-placeholder');
-        const errorMessage = document.getElementById('error-message');
-        const generateButton = document.getElementById('generate-button');
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const generateText = document.getElementById('generate-text');
-        const downloadLink = document.getElementById('download-link');
+        const urlInput = document.getElementById('doc-url') as HTMLInputElement;
+        const titleInput = document.getElementById('book-title') as HTMLInputElement;
+        const authorInput = document.getElementById('book-author') as HTMLInputElement;
+        const issuerInput = document.getElementById('book-issuer') as HTMLInputElement;
+        const dateInput = document.getElementById('book-date') as HTMLInputElement;
+        const publisherInput = document.getElementById('book-publisher') as HTMLInputElement;
+        const colophonInput = document.getElementById('book-colophon') as HTMLTextAreaElement;
+        const tcyNumbersInput = document.getElementById('opt-tcy-numbers') as HTMLInputElement;
+        const tcyLatinInput = document.getElementById('opt-tcy-latin') as HTMLInputElement;
+        const tocInput = document.getElementById('opt-toc') as HTMLInputElement;
+        const coverInput = document.getElementById('cover-file') as HTMLInputElement;
+        const coverPreview = document.getElementById('cover-preview') as HTMLImageElement;
+        const coverPlaceholder = document.getElementById('cover-placeholder') as HTMLDivElement;
+        const errorMessage = document.getElementById('error-message') as HTMLDivElement;
+        const generateButton = document.getElementById('generate-button') as HTMLButtonElement;
+        const loadingSpinner = document.getElementById('loading-spinner') as HTMLSpanElement;
+        const generateText = document.getElementById('generate-text') as HTMLSpanElement;
+        const downloadLink = document.getElementById('download-link') as HTMLAnchorElement;
 
-        let coverFile = null;
-        let downloadUrl = null;
+        let coverFile: File | null = null;
+        let downloadUrl: string | null = null;
 
-        const setError = (message) => {
+        const setError = (message: string | null) => {
             if (message) {
                 errorMessage.textContent = message;
                 errorMessage.hidden = false;
@@ -272,7 +272,7 @@ import Layout from "../layouts/Layout.astro";
             }
         };
 
-        const setGenerating = (isGenerating) => {
+        const setGenerating = (isGenerating: boolean) => {
             generateButton.disabled = isGenerating;
             loadingSpinner.hidden = !isGenerating;
             generateText.textContent = isGenerating ? '生成中...' : 'EPUB生成';
@@ -286,7 +286,7 @@ import Layout from "../layouts/Layout.astro";
             downloadLink.hidden = true;
         };
 
-        const toSafeFilename = (value) => {
+        const toSafeFilename = (value: string) => {
             const trimmed = value.trim().replace(/[\\/:*?"<>|]/g, '_').trim();
             return trimmed || 'output';
         };
@@ -311,11 +311,13 @@ import Layout from "../layouts/Layout.astro";
             coverFile = file;
             const reader = new FileReader();
             reader.onload = (ev) => {
-                coverPreview.src = ev.target.result;
+                if (reader.result && typeof reader.result === 'string') {
+                coverPreview.src = reader.result;
                 coverPreview.style.display = 'block';
                 coverPlaceholder.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
+            }
+        };
+        reader.readAsDataURL(file);
         });
 
         generateButton.addEventListener('click', async () => {
@@ -338,11 +340,14 @@ import Layout from "../layouts/Layout.astro";
                 let coverType;
 
                 if (coverFile) {
-                    const dataUrl = await new Promise((resolve, reject) => {
+                    const dataUrl = await new Promise<string>((resolve, reject) => {
                         const reader = new FileReader();
-                        reader.onload = () => resolve(reader.result);
+                        reader.onload = () => {
+                            if (typeof reader.result === 'string') resolve(reader.result);
+                            else reject(new Error('Failed to read file'));
+                        }
                         reader.onerror = reject;
-                        reader.readAsDataURL(coverFile);
+                        reader.readAsDataURL(coverFile as File);
                     });
                     coverBase64 = dataUrl.split(',')[1];
                     coverType = coverFile.type === 'image/png' ? 'png' : 'jpeg';
