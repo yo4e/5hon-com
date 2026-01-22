@@ -24,6 +24,7 @@ function App() {
   const [coverPreview, setCoverPreview] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
+  const [downloadFilename, setDownloadFilename] = useState<string>('output.epub')
   const [error, setError] = useState<string | null>(null)
   const [accordionOpen, setAccordionOpen] = useState(false) // 使い方アコーディオン
 
@@ -117,6 +118,12 @@ function App() {
       const blob = await response.blob()
       const downloadUrl = URL.createObjectURL(blob)
       setDownloadUrl(downloadUrl)
+
+      // ダウンロードファイル名の生成
+      const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+      const safeTitle = (title || 'output').replace(/[\\/:*?"<>|]/g, '_')
+      setDownloadFilename(`${safeTitle}_${timestamp}.epub`)
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'EPUB生成に失敗しました。URLを確認してやり直してください。')
     } finally {
@@ -314,7 +321,7 @@ function App() {
                 {downloadUrl && (
                   <a
                     href={downloadUrl}
-                    download="output.epub"
+                    download={downloadFilename}
                     className="btn btn-success"
                   >
                     ダウンロード
