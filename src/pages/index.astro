@@ -157,7 +157,7 @@ import Layout from "../layouts/Layout.astro";
                         <div id="error-message" class="message message-error" hidden></div>
 
                         <div class="button-row">
-                            <button id="generate-button" class="btn btn-primary">
+                            <button id="generate-button" class="btn btn-primary" type="button">
                                 <span id="loading-spinner" class="loading-spinner" hidden></span>
                                 <span id="generate-text">EPUB生成</span>
                             </button>
@@ -397,6 +397,8 @@ import Layout from "../layouts/Layout.astro";
                 setGenerating(false);
             }
         });
+
+        setGenerating(false);
 
         window.addEventListener('beforeunload', () => {
             resetDownload();
