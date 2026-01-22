@@ -7,7 +7,11 @@ interface GenerateOptions {
   tocPage: boolean
 }
 
-function App() {
+interface AppProps {
+  showHeader?: boolean
+}
+
+function App({ showHeader = true }: AppProps) {
   const [url, setUrl] = useState('')
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -141,20 +145,22 @@ function App() {
 
   return (
     <div className="app-container">
-      <header className="header">
-        <h1>5hon.com</h1>
-        <p className="header-sub">
-          GoogleドキュメントからiPhone/Mac向け縦書きEPUBを生成
-        </p>
-        <div className="header-badges">
-          <span className="badge">EPUB3</span>
-          <span className="badge">縦書き</span>
-          <span className="badge">無料</span>
-          <span className="badge">登録不要</span>
-          <span className="badge">iPhone</span>
-          <span className="badge">Mac</span>
-        </div>
-      </header>
+      {showHeader && (
+        <header className="header">
+          <h1>5hon.com</h1>
+          <p className="header-sub">
+            GoogleドキュメントからiPhone/Mac向け縦書きEPUBを生成
+          </p>
+          <div className="header-badges">
+            <span className="badge">EPUB3</span>
+            <span className="badge">縦書き</span>
+            <span className="badge">無料</span>
+            <span className="badge">登録不要</span>
+            <span className="badge">iPhone</span>
+            <span className="badge">Mac</span>
+          </div>
+        </header>
+      )}
 
       <div className="two-column">
         <main>
