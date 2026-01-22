@@ -456,6 +456,14 @@ a.btn-success:active {
   margin-bottom: var(--space-lg);
 }
 
+.accordion summary {
+  list-style: none;
+}
+
+.accordion summary::-webkit-details-marker {
+  display: none;
+}
+
 .accordion-header {
   width: 100%;
   padding: var(--space-md) var(--space-lg);
@@ -475,6 +483,11 @@ a.btn-success:active {
 .accordion-icon {
   color: var(--color-primary);
   font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+details[open] .accordion-icon {
+  transform: rotate(180deg);
 }
 
 .accordion-content {

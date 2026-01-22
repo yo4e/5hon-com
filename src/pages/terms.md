@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/Layout.astro
 title: 利用規約
+description: 5hon.comの利用規約です。禁止事項・免責事項・サービス停止条件などを定めています。
 ---
 
 # 利用規約

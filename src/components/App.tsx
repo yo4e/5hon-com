@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../styles/global.css'
 
 interface GenerateOptions {
@@ -26,13 +26,22 @@ function App() {
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
   const [downloadFilename, setDownloadFilename] = useState<string>('output.epub')
   const [error, setError] = useState<string | null>(null)
-  const [accordionOpen, setAccordionOpen] = useState(false) // 使い方アコーディオン
+  useEffect(() => {
+    return () => {
+      if (downloadUrl) {
+        URL.revokeObjectURL(downloadUrl)
+      }
+    }
+  }, [downloadUrl])
 
   const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      setError(null)
       if (file.size > 5 * 1024 * 1024) {
         setError('画像サイズは5MB以下にしてください')
+        setCoverFile(null)
+        setCoverPreview(null)
         return
       }
       setCoverFile(file)
@@ -132,7 +141,6 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* Header */}
       <header className="header">
         <h1>5hon.com</h1>
         <p className="header-sub">
@@ -148,11 +156,8 @@ function App() {
         </div>
       </header>
 
-      {/* Two Column Layout */}
       <div className="two-column">
-        {/* Main Column */}
         <main>
-          {/* URL Input */}
           <div className="card">
             <div className="input-group">
               <label className="input-label" htmlFor="doc-url">
@@ -333,12 +338,9 @@ function App() {
             </div>
           </div>
 
-          {/* Preview removed */}
         </main>
 
-        {/* Sidebar */}
         <aside className="sidebar">
-          {/* Spotify Embed - 広告枠を上に */}
           <div className="card" style={{ padding: '0.5rem', overflow: 'hidden' }}>
             <div className="spotify-embed-container">
               <iframe
@@ -355,48 +357,40 @@ function App() {
             </div>
           </div>
 
-          {/* How to Use */}
-          <div className="accordion">
-            <button
-              className="accordion-header"
-              onClick={() => setAccordionOpen(!accordionOpen)}
-            >
+          <details className="accordion">
+            <summary className="accordion-header">
               <span>使い方</span>
-              <span className={`accordion-icon ${accordionOpen ? 'open' : ''}`}>▼</span>
-            </button>
-            {accordionOpen && (
-              <div className="accordion-content">
-                <ol>
-                  <li>Googleドキュメントを<strong>「リンクを知っている全員が閲覧可」</strong>に設定</li>
-                  <li>共有リンクを上の入力欄に貼り付け</li>
-                  <li>必要に応じて表紙画像をアップロード</li>
-                  <li>「EPUB生成」ボタンをクリック</li>
-                  <li>ダウンロードしてApple Booksで開く</li>
-                </ol>
-                <div style={{ marginTop: '1rem' }}>
-                  <p><strong>ルビの書き方：</strong><br />
-                    <code>｜漢字《かんじ》</code> と書くとルビが付きます</p>
-                  <p style={{ marginTop: '0.5rem' }}><strong>縦中横（たてちゅうよこ）とは？：</strong><br />
-                    縦書きの中で、数字や英字を横書きのまま表示する機能です。「30」や「EPUB」などの短い文字列に便利です。</p>
-                  <p style={{ marginTop: '0.5rem' }}><strong>縦中横は4文字まで：</strong><br />
-                    <code>2024</code> や <code>EPUB</code> など最大4文字まで縦中横になります。</p>
-                  <p style={{ marginTop: '0.5rem', fontSize: '0.9em', color: '#666' }}>
-                    ※ドキュメント内の画像や文字の装飾（色・太字など）は反映されません。
-                  </p>
-                  <p style={{ marginTop: '1rem', borderTop: '1px dashed #ccc', paddingTop: '0.5rem', fontSize: '0.9em' }}>
-                    <strong>推奨環境：</strong><br />
-                    iPhone / iPad / Mac の「Apple Books」または「ブック」アプリ。<br />
-                    ※ブラウザは <strong>Safari</strong> または <strong>Chrome</strong> を推奨します。Googleアプリなどの内蔵ブラウザではダウンロードがうまくいかない場合があります。<br />
-                    ※iPhoneの場合、ダウンロードしたファイルは「ファイル」アプリの「ダウンロード」フォルダに保存されます。
-                  </p>
-                </div>
+              <span className="accordion-icon">▼</span>
+            </summary>
+            <div className="accordion-content">
+              <ol>
+                <li>Googleドキュメントを<strong>「リンクを知っている全員が閲覧可」</strong>に設定</li>
+                <li>共有リンクを上の入力欄に貼り付け</li>
+                <li>必要に応じて表紙画像をアップロード</li>
+                <li>「EPUB生成」ボタンをクリック</li>
+                <li>ダウンロードしてApple Booksで開く</li>
+              </ol>
+              <div style={{ marginTop: '1rem' }}>
+                <p><strong>ルビの書き方：</strong><br />
+                  <code>｜漢字《かんじ》</code> と書くとルビが付きます</p>
+                <p style={{ marginTop: '0.5rem' }}><strong>縦中横（たてちゅうよこ）とは？：</strong><br />
+                  縦書きの中で、数字や英字を横書きのまま表示する機能です。「30」や「EPUB」などの短い文字列に便利です。</p>
+                <p style={{ marginTop: '0.5rem' }}><strong>縦中横は4文字まで：</strong><br />
+                  <code>2024</code> や <code>EPUB</code> など最大4文字まで縦中横になります。</p>
+                <p style={{ marginTop: '0.5rem', fontSize: '0.9em', color: '#666' }}>
+                  ※ドキュメント内の画像や文字の装飾（色・太字など）は反映されません。
+                </p>
+                <p style={{ marginTop: '1rem', borderTop: '1px dashed #ccc', paddingTop: '0.5rem', fontSize: '0.9em' }}>
+                  <strong>推奨環境：</strong><br />
+                  iPhone / iPad / Mac の「Apple Books」または「ブック」アプリ。<br />
+                  ※ブラウザは <strong>Safari</strong> または <strong>Chrome</strong> を推奨します。Googleアプリなどの内蔵ブラウザではダウンロードがうまくいかない場合があります。<br />
+                  ※iPhoneの場合、ダウンロードしたファイルは「ファイル」アプリの「ダウンロード」フォルダに保存されます。
+                </p>
               </div>
-            )}
-          </div>
+            </div>
+          </details>
         </aside>
       </div>
-
-
     </div>
   )
 }

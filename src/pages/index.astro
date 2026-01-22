@@ -5,8 +5,25 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout
     title="5hon.com - Googleドキュメントから縦書きEPUBを生成"
+    description="Googleドキュメントの共有リンクから、iPhone/Mac向け縦書きEPUBを無料で即生成。表紙・ルビ・縦中横にも対応。登録不要で使えます。"
     fullWidth={true}
     hideAd={true}
 >
-    <App client:only="react" />
+    <App client:load />
+    <script type="application/ld+json">
+        {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "5hon.com",
+            applicationCategory: "WebApplication",
+            operatingSystem: "All",
+            description:
+                "Googleドキュメントの共有リンクから縦書きEPUBを生成する無料Webアプリ。",
+            offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "JPY",
+            },
+        })}
+    </script>
 </Layout>

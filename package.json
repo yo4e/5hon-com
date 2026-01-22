@@ -12,6 +12,7 @@
     "dependencies": {
         "@astrojs/cloudflare": "^12.6.12",
         "@astrojs/react": "^4.1.0",
+        "@astrojs/sitemap": "^3.7.0",
         "@cloudflare/workers-types": "^4.20240101.0",
         "astro": "^5.1.1",
         "jszip": "^3.10.1",

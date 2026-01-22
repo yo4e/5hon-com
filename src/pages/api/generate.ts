@@ -526,6 +526,10 @@ function formatColophonNotes(text: string): string {
     return escapeXml(text).replace(/\r?\n/g, '<br/>')
 }
 
+function toSafeFilename(name: string): string {
+    return name.replace(/[\\/:*?"<>|]/g, '_').replace(/\s+/g, ' ').trim()
+}
+
 // ========== エンドポイント ==========
 
 export const POST: APIRoute = async (context) => {
@@ -565,8 +569,13 @@ export const POST: APIRoute = async (context) => {
             }
         }
 
+        const requestedTitle = body.title?.trim()
+        const finalTitle = requestedTitle || parsed.title
+        const filenameBase = toSafeFilename(finalTitle || 'output') || 'output'
+        const downloadFilename = `${filenameBase}.epub`
+
         const epub = await buildEpub(parsed.paragraphs, {
-            title: body.title || parsed.title,
+            title: finalTitle,
             author: body.author,
             publicationDate: body.publicationDate,
             publisher: body.publisher,
@@ -583,7 +592,7 @@ export const POST: APIRoute = async (context) => {
         return new Response(epub, {
             headers: {
                 'Content-Type': 'application/epub+zip',
-                'Content-Disposition': `attachment; filename="${encodeURIComponent(parsed.title)}.epub"`,
+                'Content-Disposition': `attachment; filename="${encodeURIComponent(downloadFilename)}"`,
             },
         })
     } catch (error) {

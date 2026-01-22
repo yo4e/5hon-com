@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/Layout.astro
 title: プライバシーポリシー
+description: 5hon.comのプライバシーポリシーです。取得情報・利用目的・第三者提供・解析ツールについて説明します。
 ---
 
 # プライバシーポリシー
