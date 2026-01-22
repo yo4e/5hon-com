@@ -9,15 +9,8 @@ interface Props {
     ogType?: string;
 }
 
-const {
-    title,
-    description,
-    fullWidth,
-    hideAd,
-    canonical,
-    ogImage,
-    ogType,
-} = Astro.props;
+const { title, description, fullWidth, hideAd, canonical, ogImage, ogType } =
+    Astro.props;
 import "../styles/global.css";
 
 const metaDescription =
@@ -81,6 +74,21 @@ const socialType = ogType ?? "website";
                     </div>
                 )
             }
+            {
+                // ブログ記事の場合のみシェアボタンを表示
+                Astro.url.pathname.startsWith("/blog/") && (
+                    <div class="share-area">
+                        <a
+                            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(Astro.url.href)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="share-btn"
+                        >
+                            Xでシェア
+                        </a>
+                    </div>
+                )
+            }
             <div class="footer-links">
                 <a href="/">HOME</a>
                 <span class="separator">/</span>
@@ -135,6 +143,24 @@ const socialType = ogType ?? "website";
         margin-top: 4px;
         margin-right: 8px;
     }
+    .share-area {
+        margin-bottom: 2rem;
+    }
+    .share-btn {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: black;
+        color: white !important;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        text-decoration: none;
+        font-weight: bold;
+        transition: opacity 0.2s;
+    }
+    .share-btn:hover {
+        opacity: 0.8;
+        text-decoration: none;
+    }
     .footer-links {
         margin-bottom: 1rem;
     }
@@ -142,6 +168,10 @@ const socialType = ogType ?? "website";
         color: var(--text);
         text-decoration: none;
         font-weight: bold;
+        transition: color 0.2s;
+    }
+    footer a:hover {
+        color: var(--accent); /* ホバー時にアクセントカラー */
     }
     footer .separator {
         margin: 0 0.5rem;

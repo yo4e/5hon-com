@@ -93,6 +93,8 @@ h4 {
 h1 {
   font-size: 1.8rem;
   color: var(--color-text);
+  margin-bottom: 2rem;
+  /* タイトルと本文の間を広げる */
 }
 
 h2 {
@@ -181,10 +183,25 @@ a:hover {
   justify-content: center;
   gap: var(--space-sm);
   margin-top: var(--space-md);
+  flex-wrap: wrap;
+  /* 折り返し許可 */
+}
+
+@media (max-width: 600px) {
+  .header-badges {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    /* 3列 */
+    justify-content: center;
+    gap: var(--space-xs) var(--space-sm);
+    /* 上下、左右の間隔 */
+  }
 }
 
 .badge {
   display: inline-flex;
+  justify-content: center;
+  /* 文字中央揃え */
   align-items: center;
   gap: var(--space-xs);
   padding: 4px 10px;
@@ -194,6 +211,8 @@ a:hover {
   font-weight: 600;
   color: var(--color-text-muted);
   box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+  /* 折り返し防止 */
 }
 
 /* ===== Cards ===== */
