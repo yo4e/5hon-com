@@ -1,5 +1,4 @@
 ---
-import App from "../components/App";
 import Layout from "../layouts/Layout.astro";
 ---
 
@@ -36,9 +35,198 @@ import Layout from "../layouts/Layout.astro";
                 ルビ記法（<code>｜漢字《かんじ》</code>）や縦中横にも対応しています。
             </p>
         </section>
-    </div>
 
-    <App client:only="react" showHeader={false} />
+        <div class="two-column">
+            <main>
+                <div class="card">
+                    <div class="input-group">
+                        <label class="input-label" for="doc-url">
+                            Googleドキュメントの共有リンク
+                        </label>
+                        <input
+                            id="doc-url"
+                            type="url"
+                            class="input-text"
+                            placeholder="https://docs.google.com/document/d/..."
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">書誌情報（任意）</label>
+                        <div class="two-column-grid">
+                            <div>
+                                <input
+                                    id="book-title"
+                                    type="text"
+                                    class="input-text"
+                                    placeholder="タイトル（例：吾輩は猫である）"
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    id="book-author"
+                                    type="text"
+                                    class="input-text"
+                                    placeholder="著者名（例：夏目 漱石）"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">奥付情報（任意）</label>
+                        <div class="two-column-grid">
+                            <div>
+                                <input
+                                    id="book-issuer"
+                                    type="text"
+                                    class="input-text"
+                                    placeholder="発行者（例：5hon編集部）"
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    id="book-date"
+                                    type="text"
+                                    class="input-text"
+                                    placeholder="発行日（例：2025年01月21日）"
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    id="book-publisher"
+                                    type="text"
+                                    class="input-text"
+                                    placeholder="発行（例：5hon出版）"
+                                />
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <textarea
+                                id="book-colophon"
+                                class="input-text"
+                                rows="4"
+                                placeholder="奥付への自由記入（例：印刷所や連絡先など）"
+                            ></textarea>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">オプション</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <span>数字を縦中横に</span>
+                                    <input id="opt-tcy-numbers" type="checkbox" checked />
+                                </label>
+                                <label class="checkbox-label">
+                                    <span>英字を縦中横に</span>
+                                    <input id="opt-tcy-latin" type="checkbox" />
+                                </label>
+                                <label class="checkbox-label">
+                                    <span>目次ページを生成</span>
+                                    <input id="opt-toc" type="checkbox" checked />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">表紙画像（任意）</label>
+                            <label class="file-upload">
+                                <input
+                                    id="cover-file"
+                                    type="file"
+                                    accept="image/jpeg,image/png"
+                                    style="display: none;"
+                                />
+                                <img
+                                    id="cover-preview"
+                                    alt="表紙プレビュー"
+                                    style="max-width: 150px; max-height: 200px; border-radius: 4px; display: none;"
+                                />
+                                <div id="cover-placeholder">
+                                    <div class="file-upload-icon">+</div>
+                                    <div class="file-upload-text">
+                                        クリックして表紙画像を選択
+                                    </div>
+                                    <div class="file-upload-hint">
+                                        JPEG / PNG・5MB以下・長辺1600px以上推奨
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div id="error-message" class="message message-error" hidden></div>
+
+                        <div class="button-row">
+                            <button id="generate-button" class="btn btn-primary">
+                                <span id="loading-spinner" class="loading-spinner" hidden></span>
+                                <span id="generate-text">EPUB生成</span>
+                            </button>
+                            <a
+                                id="download-link"
+                                class="btn btn-success"
+                                hidden
+                                href="#"
+                                download="output.epub"
+                            >
+                                ダウンロード
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar">
+                <div class="card" style="padding: 0.5rem; overflow: hidden;">
+                    <div class="spotify-embed-container">
+                        <iframe
+                            style="border-radius: 12px"
+                            src="https://open.spotify.com/embed/album/6RkKzmALX0QTDV2FddLsHB?utm_source=generator"
+                            width="100%"
+                            height="352"
+                            frameborder="0"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy"
+                            title="Spotify Album"
+                        ></iframe>
+                        <div class="pr-text">PR: 読書にぴったりのアンビエントミュージック</div>
+                    </div>
+                </div>
+
+                <details class="accordion">
+                    <summary class="accordion-header">
+                        <span>使い方</span>
+                        <span class="accordion-icon">▼</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <ol>
+                            <li>Googleドキュメントを<strong>「リンクを知っている全員が閲覧可」</strong>に設定</li>
+                            <li>共有リンクを上の入力欄に貼り付け</li>
+                            <li>必要に応じて表紙画像をアップロード</li>
+                            <li>「EPUB生成」ボタンをクリック</li>
+                            <li>ダウンロードしてApple Booksで開く</li>
+                        </ol>
+                        <div style="margin-top: 1rem;">
+                            <p><strong>ルビの書き方：</strong><br />
+                                <code>｜漢字《かんじ》</code> と書くとルビが付きます</p>
+                            <p style="margin-top: 0.5rem;"><strong>縦中横（たてちゅうよこ）とは？：</strong><br />
+                                縦書きの中で、数字や英字を横書きのまま表示する機能です。「30」や「EPUB」などの短い文字列に便利です。</p>
+                            <p style="margin-top: 0.5rem;"><strong>縦中横は4文字まで：</strong><br />
+                                <code>2024</code> や <code>EPUB</code> など最大4文字まで縦中横になります。</p>
+                            <p style="margin-top: 0.5rem; font-size: 0.9em; color: #666;">
+                                ※ドキュメント内の画像や文字の装飾（色・太字など）は反映されません。
+                            </p>
+                            <p style="margin-top: 1rem; border-top: 1px dashed #ccc; padding-top: 0.5rem; font-size: 0.9em;">
+                                <strong>推奨環境：</strong><br />
+                                iPhone / iPad / Mac の「Apple Books」または「ブック」アプリ。<br />
+                                ※ブラウザは <strong>Safari</strong> または <strong>Chrome</strong> を推奨します。Googleアプリなどの内蔵ブラウザではダウンロードがうまくいかない場合があります。<br />
+                                ※iPhoneの場合、ダウンロードしたファイルは「ファイル」アプリの「ダウンロード」フォルダに保存されます。
+                            </p>
+                        </div>
+                    </div>
+                </details>
+            </aside>
+        </div>
+    </div>
     <script type="application/ld+json">
         {JSON.stringify({
             "@context": "https://schema.org",
@@ -54,5 +242,164 @@ import Layout from "../layouts/Layout.astro";
                 priceCurrency: "JPY",
             },
         })}
+    </script>
+    <script>
+        const urlInput = document.getElementById('doc-url');
+        const titleInput = document.getElementById('book-title');
+        const authorInput = document.getElementById('book-author');
+        const issuerInput = document.getElementById('book-issuer');
+        const dateInput = document.getElementById('book-date');
+        const publisherInput = document.getElementById('book-publisher');
+        const colophonInput = document.getElementById('book-colophon');
+        const tcyNumbersInput = document.getElementById('opt-tcy-numbers');
+        const tcyLatinInput = document.getElementById('opt-tcy-latin');
+        const tocInput = document.getElementById('opt-toc');
+        const coverInput = document.getElementById('cover-file');
+        const coverPreview = document.getElementById('cover-preview');
+        const coverPlaceholder = document.getElementById('cover-placeholder');
+        const errorMessage = document.getElementById('error-message');
+        const generateButton = document.getElementById('generate-button');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const generateText = document.getElementById('generate-text');
+        const downloadLink = document.getElementById('download-link');
+
+        let coverFile = null;
+        let downloadUrl = null;
+
+        const setError = (message) => {
+            if (message) {
+                errorMessage.textContent = message;
+                errorMessage.hidden = false;
+            } else {
+                errorMessage.hidden = true;
+            }
+        };
+
+        const setGenerating = (isGenerating) => {
+            generateButton.disabled = isGenerating;
+            loadingSpinner.hidden = !isGenerating;
+            generateText.textContent = isGenerating ? '生成中...' : 'EPUB生成';
+        };
+
+        const resetDownload = () => {
+            if (downloadUrl) {
+                URL.revokeObjectURL(downloadUrl);
+                downloadUrl = null;
+            }
+            downloadLink.hidden = true;
+        };
+
+        const toSafeFilename = (value) => {
+            const trimmed = value.trim().replace(/[\\/:*?"<>|]/g, '_').trim();
+            return trimmed || 'output';
+        };
+
+        coverInput.addEventListener('change', (event) => {
+            const file = event.target.files && event.target.files[0];
+            setError(null);
+            if (!file) {
+                coverFile = null;
+                coverPreview.style.display = 'none';
+                coverPlaceholder.style.display = 'block';
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                setError('画像サイズは5MB以下にしてください');
+                coverFile = null;
+                coverInput.value = '';
+                coverPreview.style.display = 'none';
+                coverPlaceholder.style.display = 'block';
+                return;
+            }
+            coverFile = file;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                coverPreview.src = ev.target.result;
+                coverPreview.style.display = 'block';
+                coverPlaceholder.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        generateButton.addEventListener('click', async () => {
+            const url = urlInput.value.trim();
+            if (!url) {
+                setError('URLを入力してください');
+                return;
+            }
+            if (!url.includes('docs.google.com/document/d/')) {
+                setError('有効なGoogleドキュメントのURLではありません');
+                return;
+            }
+
+            setGenerating(true);
+            setError(null);
+            resetDownload();
+
+            try {
+                let coverBase64;
+                let coverType;
+
+                if (coverFile) {
+                    const dataUrl = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(coverFile);
+                    });
+                    coverBase64 = dataUrl.split(',')[1];
+                    coverType = coverFile.type === 'image/png' ? 'png' : 'jpeg';
+                }
+
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        url,
+                        title: titleInput.value.trim(),
+                        author: authorInput.value.trim(),
+                        publicationDate: dateInput.value.trim(),
+                        publisher: publisherInput.value.trim(),
+                        issuer: issuerInput.value.trim(),
+                        colophonNotes: colophonInput.value.trim(),
+                        options: {
+                            tcyNumbers: tcyNumbersInput.checked,
+                            tcyLatin: tcyLatinInput.checked,
+                            tocPage: tocInput.checked,
+                        },
+                        coverBase64,
+                        coverType,
+                    }),
+                });
+
+                if (!response.ok) {
+                    let message = 'EPUB生成に失敗しました';
+                    const rawText = await response.text();
+                    if (rawText) {
+                        try {
+                            const errorData = JSON.parse(rawText);
+                            message = errorData.message || message;
+                        } catch {
+                            message = rawText;
+                        }
+                    }
+                    throw new Error(message);
+                }
+
+                const blob = await response.blob();
+                downloadUrl = URL.createObjectURL(blob);
+                downloadLink.href = downloadUrl;
+                downloadLink.download = `${toSafeFilename(titleInput.value || 'output')}.epub`;
+                downloadLink.hidden = false;
+            } catch (error) {
+                setError(error instanceof Error ? error.message : 'EPUB生成に失敗しました。URLを確認してやり直してください。');
+            } finally {
+                setGenerating(false);
+            }
+        });
+
+        window.addEventListener('beforeunload', () => {
+            resetDownload();
+        });
     </script>
 </Layout>

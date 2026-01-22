@@ -137,8 +137,18 @@ a:hover {
   align-items: start;
 }
 
+.two-column-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
 @media (max-width: 900px) {
   .two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .two-column-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -368,6 +378,12 @@ a:hover {
   transition: all 0.2s;
   width: 100%;
   /* 基本フル幅 */
+}
+
+.button-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .btn-primary {
