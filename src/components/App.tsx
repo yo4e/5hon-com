@@ -396,19 +396,7 @@ function App() {
         </aside>
       </div>
 
-      {/* Footer */}
-      <footer style={{
-        marginTop: '3rem',
-        paddingTop: '1.5rem',
-        borderTop: '1px solid var(--color-border)',
-        textAlign: 'center',
-        color: 'var(--color-text-muted)',
-        fontSize: '0.8rem'
-      }}>
-        <p>
-          &copy; 2026 5hon.com
-        </p>
-      </footer>
+
     </div>
   )
 }
