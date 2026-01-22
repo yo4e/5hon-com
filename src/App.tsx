@@ -147,9 +147,12 @@ function App() {
           GoogleドキュメントからiPhone/Mac向け縦書きEPUBを生成
         </p>
         <div className="header-badges">
-          <span className="badge">縦書きEPUB3</span>
-          <span className="badge">ユーザー登録不要・無料</span>
-          <span className="badge">iPhone/Mac対応</span>
+          <span className="badge">EPUB3</span>
+          <span className="badge">縦書き</span>
+          <span className="badge">無料</span>
+          <span className="badge">登録不要</span>
+          <span className="badge">iPhone</span>
+          <span className="badge">Mac</span>
         </div>
       </header>
 
