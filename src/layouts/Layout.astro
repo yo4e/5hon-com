@@ -51,6 +51,11 @@ const socialType = ogType ?? "website";
         <title>{title}</title>
     </head>
     <body>
+        <header class="site-header">
+            <a href="/" class="site-branding">
+                <span class="site-title">5hon.com</span>
+            </a>
+        </header>
         <main class={fullWidth ? "" : "page-content"}>
             <slot />
             {
@@ -141,6 +146,30 @@ const socialType = ogType ?? "website";
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         margin-top: 2rem;
         line-height: 1.8;
+    }
+    .site-header {
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .site-branding {
+        text-decoration: none;
+        color: var(--color-text);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: opacity 0.2s;
+    }
+    .site-branding:hover {
+        opacity: 0.7;
+        text-decoration: none;
+    }
+    .site-title {
+        font-weight: 800;
+        font-size: 1.1rem;
+        letter-spacing: -0.02em;
     }
     footer {
         text-align: center;
