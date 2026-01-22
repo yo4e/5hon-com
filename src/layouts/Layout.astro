@@ -53,27 +53,6 @@ const socialType = ogType ?? "website";
     <body>
         <main class={fullWidth ? "" : "page-content"}>
             <slot />
-        </main>
-        <footer>
-            {
-                !hideAd && (
-                    <div class="ad-placeholder">
-                        <div class="ad-content">
-                            <iframe
-                                style="border-radius:12px"
-                                src="https://open.spotify.com/embed/playlist/4e30mPeoB3NrqYlj4NRIut?utm_source=generator&theme=0"
-                                width="100%"
-                                height="352"
-                                frameborder="0"
-                                allowfullscreen=""
-                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                                loading="lazy"
-                            />
-                        </div>
-                        <div class="ad-pr">PR</div>
-                    </div>
-                )
-            }
             {
                 // ブログ記事の場合のみシェアボタンを表示
                 Astro.url.pathname.startsWith("/blog/") && (
@@ -108,6 +87,28 @@ const socialType = ogType ?? "website";
                     </div>
                 )
             }
+        </main>
+        <footer>
+            {
+                !hideAd && (
+                    <div class="ad-placeholder">
+                        <div class="ad-content">
+                            <iframe
+                                style="border-radius:12px"
+                                src="https://open.spotify.com/embed/playlist/4e30mPeoB3NrqYlj4NRIut?utm_source=generator&theme=0"
+                                width="100%"
+                                height="352"
+                                frameborder="0"
+                                allowfullscreen=""
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="ad-pr">PR</div>
+                    </div>
+                )
+            }
+
             <div class="footer-links">
                 <a href="/">HOME</a>
                 <span class="separator">/</span>
