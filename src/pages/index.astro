@@ -96,6 +96,14 @@ import Layout from "../layouts/Layout.astro";
                                     placeholder="発行（例：5hon出版）"
                                 />
                             </div>
+                            <div>
+                                <input
+                                    id="book-edition"
+                                    type="text"
+                                    class="input-text"
+                                    placeholder="版（例：第3版）"
+                                />
+                            </div>
                         </div>
                         <div style="margin-top: 1rem;">
                             <textarea
@@ -248,6 +256,7 @@ import Layout from "../layouts/Layout.astro";
         const authorInput = document.getElementById('book-author') as HTMLInputElement;
         const issuerInput = document.getElementById('book-issuer') as HTMLInputElement;
         const dateInput = document.getElementById('book-date') as HTMLInputElement;
+        const editionInput = document.getElementById('book-edition') as HTMLInputElement;
         const publisherInput = document.getElementById('book-publisher') as HTMLInputElement;
         const colophonInput = document.getElementById('book-colophon') as HTMLTextAreaElement;
         const tcyNumbersInput = document.getElementById('opt-tcy-numbers') as HTMLInputElement;
@@ -375,6 +384,7 @@ import Layout from "../layouts/Layout.astro";
                         title: titleInput.value.trim(),
                         author: authorInput.value.trim(),
                         publicationDate: dateInput.value.trim(),
+                        edition: editionInput.value.trim(),
                         publisher: publisherInput.value.trim(),
                         issuer: issuerInput.value.trim(),
                         colophonNotes: colophonInput.value.trim(),

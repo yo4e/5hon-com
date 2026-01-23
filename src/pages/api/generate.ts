@@ -473,8 +473,8 @@ ${body}
             options.author ? `<dt>著　者</dt><dd>${escapeXml(options.author)}</dd>` : '',
             options.issuer ? `<dt>発行者</dt><dd>${escapeXml(options.issuer)}</dd>` : '',
             options.publicationDate ? `<dt>発行日</dt><dd>${escapeXml(options.publicationDate)}</dd>` : '',
+            options.edition ? `<dt>版</dt><dd>${escapeXml(options.edition)}</dd>` : '',
             options.publisher ? `<dt>発　行</dt><dd>${escapeXml(options.publisher)}</dd>` : '',
-            options.edition ? `<dt>版　次</dt><dd>${escapeXml(options.edition)}</dd>` : '',
         ].filter(Boolean).join('\n')
         const notes = options.colophonNotes ? `<p class="colophon-notes">${formatColophonNotes(options.colophonNotes)}</p>` : ''
         zip.file('OEBPS/colophon.xhtml', fixXml(`<?xml version="1.0" encoding="UTF-8"?>
