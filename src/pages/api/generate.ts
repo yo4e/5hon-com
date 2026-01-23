@@ -113,6 +113,17 @@ function parseGoogleDocHtml(html: string, title: string): { title: string; parag
         }
     }
 
+    if (paragraphs.length === 0) {
+        const plainText = stripHtml(cleaned)
+        if (plainText.trim()) {
+            plainText.split(/\n+/).forEach((line) => {
+                if (line.trim()) {
+                    paragraphs.push({ type: 'p', text: line.trim() })
+                }
+            })
+        }
+    }
+
     return { title: sanitizeText(title), paragraphs }
 }
 
@@ -141,9 +152,15 @@ function stripHtml(html: string): string {
         .replace(/&times;/g, '\u00D7')
         .replace(/&divide;/g, '\u00F7')
         // 数値文字参照をデコード（&#12345; 形式）
-        .replace(/&#(\d+);/g, (_m, code) => String.fromCharCode(parseInt(code, 10)))
+        .replace(/&#(\d+);/g, (_m, code) => {
+            const value = parseInt(code, 10)
+            return value >= 0 && value <= 0x10FFFF ? String.fromCodePoint(value) : ''
+        })
         // 16進数文字参照をデコード（&#x3042; 形式）
-        .replace(/&#x([0-9a-fA-F]+);/g, (_m, hex) => String.fromCharCode(parseInt(hex, 16)))
+        .replace(/&#x([0-9a-fA-F]+);/g, (_m, hex) => {
+            const value = parseInt(hex, 16)
+            return value >= 0 && value <= 0x10FFFF ? String.fromCodePoint(value) : ''
+        })
         .trim()
 }
 
@@ -457,6 +474,7 @@ ${body}
             options.issuer ? `<dt>発行者</dt><dd>${escapeXml(options.issuer)}</dd>` : '',
             options.publicationDate ? `<dt>発行日</dt><dd>${escapeXml(options.publicationDate)}</dd>` : '',
             options.publisher ? `<dt>発　行</dt><dd>${escapeXml(options.publisher)}</dd>` : '',
+            options.edition ? `<dt>版　次</dt><dd>${escapeXml(options.edition)}</dd>` : '',
         ].filter(Boolean).join('\n')
         const notes = options.colophonNotes ? `<p class="colophon-notes">${formatColophonNotes(options.colophonNotes)}</p>` : ''
         zip.file('OEBPS/colophon.xhtml', fixXml(`<?xml version="1.0" encoding="UTF-8"?>
@@ -557,6 +575,13 @@ export const POST: APIRoute = async (context) => {
 
         let coverImage: { data: ArrayBuffer; type: 'jpeg' | 'png' } | undefined
         if (body.coverBase64 && body.coverType) {
+            if (body.coverType !== 'jpeg' && body.coverType !== 'png') {
+                return errorResponse('INVALID_COVER', '表紙画像の形式が不正です')
+            }
+            const estimatedBytes = Math.floor((body.coverBase64.length * 3) / 4)
+            if (estimatedBytes > 5 * 1024 * 1024) {
+                return errorResponse('COVER_TOO_LARGE', '表紙画像は5MB以下にしてください')
+            }
             try {
                 const binary = atob(body.coverBase64)
                 const bytes = new Uint8Array(binary.length)

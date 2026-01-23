@@ -288,6 +288,17 @@ import Layout from "../layouts/Layout.astro";
             downloadLink.hidden = true;
         };
 
+        const getFilenameFromDisposition = (headerValue: string | null) => {
+            if (!headerValue) return null;
+            const match = headerValue.match(/filename\*?=(?:UTF-8''|\"?)([^\";]+)/i);
+            if (!match) return null;
+            try {
+                return decodeURIComponent(match[1]);
+            } catch {
+                return match[1];
+            }
+        };
+
         const toSafeFilename = (value: string) => {
             const trimmed = value.trim().replace(/[\\/:*?"<>|]/g, '_').trim();
             return trimmed || 'output';
@@ -315,12 +326,12 @@ import Layout from "../layouts/Layout.astro";
             const reader = new FileReader();
             reader.onload = (ev) => {
                 if (reader.result && typeof reader.result === 'string') {
-                coverPreview.src = reader.result;
-                coverPreview.style.display = 'block';
-                coverPlaceholder.style.display = 'none';
+                    coverPreview.src = reader.result;
+                    coverPreview.style.display = 'block';
+                    coverPlaceholder.style.display = 'none';
+                }
             }
-        };
-        reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
         });
 
         generateButton.addEventListener('click', async () => {
@@ -394,7 +405,9 @@ import Layout from "../layouts/Layout.astro";
                 const blob = await response.blob();
                 downloadUrl = URL.createObjectURL(blob);
                 downloadLink.href = downloadUrl;
-                downloadLink.download = `${toSafeFilename(titleInput.value || 'output')}.epub`;
+                const serverFilename = getFilenameFromDisposition(response.headers.get('Content-Disposition'));
+                const clientFilename = `${toSafeFilename(titleInput.value || 'output')}.epub`;
+                downloadLink.download = serverFilename || clientFilename;
                 downloadLink.hidden = false;
             } catch (error) {
                 setError(error instanceof Error ? error.message : 'EPUB生成に失敗しました。URLを確認してやり直してください。');
