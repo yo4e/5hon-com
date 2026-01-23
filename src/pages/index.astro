@@ -11,8 +11,10 @@ import Layout from "../layouts/Layout.astro";
     <div class="app-container">
         <header class="header">
             <h1 class="brand-logo">5hon.com</h1>
-            <p class="header-sub">
-                GoogleドキュメントからiPhone/Mac向け縦書きEPUBを生成
+            <p class="header-sub" style="font-weight: bold; font-size: 1.1em; color: #b4b644; line-height: 1.4; margin-top: 0.5rem;">
+                スマホで読めるデジタルZINE<br />
+                Googleドキュメントから<br />
+                iPhone/Mac向け縦書きEPUBを生成
             </p>
             <div class="header-badges">
                 <span class="badge">縦書きEPUB3</span>
@@ -202,7 +204,8 @@ import Layout from "../layouts/Layout.astro";
                         <span class="accordion-icon">▼</span>
                     </summary>
                     <div class="accordion-content">
-                        <ol>
+                        <p style="margin-bottom: 0.5rem;"><strong>生成方法：</strong></p>
+                        <ol style="margin-top: 0;">
                             <li>Googleドキュメントを<strong>「リンクを知っている全員が閲覧可」</strong>に設定</li>
                             <li>共有リンクを上の入力欄に貼り付け</li>
                             <li>必要に応じて表紙画像をアップロード</li>
@@ -221,10 +224,15 @@ import Layout from "../layouts/Layout.astro";
                             </p>
                             <p style="margin-top: 1rem; border-top: 1px dashed #ccc; padding-top: 0.5rem; font-size: 0.9em;">
                                 <strong>推奨環境：</strong><br />
-                                iPhone / iPad / Mac の「Apple Books」または「ブック」アプリ。<br />
-                                ※ブラウザは <strong>Safari</strong> または <strong>Chrome</strong> を推奨します。Googleアプリなどの内蔵ブラウザではダウンロードがうまくいかない場合があります。<br />
-                                ※iPhoneの場合、ダウンロードしたファイルは「ファイル」アプリの「ダウンロード」フォルダに保存されます。
+                                推奨ビューワー：iPhone / iPad / Mac の「Apple Books」または「ブック アプリ」。Androidの「Google Play ブックス」では組版が乱れる場合があります。KDPでは組版が乱れる可能性があります。Windowsのビューワーは対応中です。<br />
+                                推奨ブラウザ：EPUB生成時のブラウザは Safari または Chrome を推奨します。Googleアプリなどの内蔵ブラウザではダウンロードがうまくいかない場合があります。<br />
+                                EPUB保存先：iPhoneの場合、ダウンロードしたファイルは「ファイル」アプリの「ダウンロード」フォルダに保存されます。
                             </p>
+                            <div style="margin-top: 1.5rem; text-align: center;">
+                                <a href="/blog/how-to-use" style="display: inline-block; background: #b4b644; color: #f1f0ef; padding: 0.8rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
+                                    さらに詳しい使い方を見る
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </details>
