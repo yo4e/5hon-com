@@ -49,13 +49,17 @@ const socialType = ogType ?? "website";
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={socialImage} />
         <title>{title}</title>
-    </head>
-    <body>
-        <header class="site-header">
-            <a href="/" class="site-branding">
-                <span class="site-title">5hon.com</span>
-            </a>
-        </header>
+    </head><body>
+        {
+            // ブログページなどのサブページでのみヘッダーを表示（トップページでは非表示）
+            Astro.url.pathname !== "/" && (
+                <header class="site-header">
+                    <a href="/" class="site-branding">
+                        <span class="site-title">5hon.com</span>
+                    </a>
+                </header>
+            )
+        }
         <main class={fullWidth ? "" : "page-content"}>
             <slot />
             {
@@ -148,8 +152,9 @@ const socialType = ogType ?? "website";
         line-height: 1.8;
     }
     .site-header {
-        padding: 1rem 1.5rem;
+        padding: 2rem 1.5rem 0; /* 上の余白を少し広げて、下は詰め気味に */
         display: flex;
+        justify-content: center; /* 中央揃え */
         align-items: center;
         max-width: 800px;
         margin: 0 auto;
@@ -167,9 +172,10 @@ const socialType = ogType ?? "website";
         text-decoration: none;
     }
     .site-title {
-        font-weight: 800;
-        font-size: 1.1rem;
-        letter-spacing: -0.02em;
+        font-weight: 700;
+        font-size: 1.8rem; /* トップページのh1と同じくらいのサイズ感に */
+        letter-spacing: 0.02em;
+        color: var(--color-text);
     }
     footer {
         text-align: center;
