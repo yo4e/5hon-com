@@ -15,17 +15,29 @@ posts.sort((a, b) => {
     title="ブログ - 5hon.com"
     description="5hon.comのアップデート情報や、縦書きEPUB作成のコツを紹介するブログです。"
 >
-    <h1>5hon.com NEWS</h1>
-    <p class="intro">
-        5hon.comのアップデート情報や、便利な使い方を紹介します。
-    </p>
+    <div
+        style="background-color: #b4b644; color: #f1f0ef; padding: 1.5rem; border-radius: 12px; margin-bottom: 3rem;"
+    >
+        <h1 style="color: #f1f0ef; margin-bottom: 0.5rem; font-size: 1.8rem;">
+            5hon.com NEWS
+        </h1>
+        <p class="intro" style="color: #f1f0ef; margin-bottom: 0;">
+            5hon.comのアップデート情報や、便利な使い方を紹介します。
+        </p>
+    </div>
 
     <div class="post-list">
         {
             posts.map((post) => (
                 <article class="post-card">
                     <a href={post.url} class="post-link">
-                        <div class="post-date">{post.frontmatter.date}</div>
+                        <div class="post-date">
+                            {
+                                new Date(post.frontmatter.date)
+                                    .toISOString()
+                                    .split("T")[0]
+                            }
+                        </div>
                         <h2 class="post-title">{post.frontmatter.title}</h2>
                         <p class="post-desc">{post.frontmatter.description}</p>
                     </a>
@@ -37,8 +49,7 @@ posts.sort((a, b) => {
 
 <style>
     .intro {
-        margin-bottom: 3rem;
-        color: var(--muted);
+        /* margin-bottom & color handled inline */
     }
     .post-list {
         display: flex;

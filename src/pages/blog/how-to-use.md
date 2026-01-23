@@ -1,11 +1,9 @@
 ---
-layout: ../../layouts/Layout.astro
+layout: ../../layouts/BlogPostLayout.astro
 title: 5hon.comの使い方 - GoogleドキュメントからEPUBを作る方法
 date: 2026-01-22
 description: 5hon.comを使って、Googleドキュメントの原稿を縦書きEPUBに変換する詳細な手順を解説します。
 ---
-
-# 5hon.comの使い方 - GoogleドキュメントからEPUBを作る方法
 
 5hon.comは、Googleドキュメントで書いた小説や文章を、iPhoneやiPadの「ブック（Apple Books）」アプリで読める縦書きの電子書籍（EPUB）に変換するツールです。
 

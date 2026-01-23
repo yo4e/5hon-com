@@ -65,7 +65,7 @@
   font-family: var(--font-sans);
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: var(--color-text);
+  color: #4591a8;
   line-height: 1;
 }
 
@@ -176,7 +176,6 @@ a:hover {
 
 .header h1 {
   font-size: 2rem;
-  color: var(--color-text);
   margin-bottom: var(--space-xs);
 }
 
