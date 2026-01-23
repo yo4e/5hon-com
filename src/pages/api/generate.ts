@@ -398,12 +398,12 @@ p.no-indent{text-indent:0}
 .tocpage ol{list-style:none;padding:0;margin:0}
 .tocpage li{margin:0 0 0.8em 0}
 .colophon-page{writing-mode:horizontal-tb;-webkit-writing-mode:horizontal-tb;display:flex;align-items:flex-end;justify-content:center;height:100vh;margin:0}
-.colophon-box{width:70%;border-top:1px solid #333;border-bottom:1px solid #333;padding:1.5em 0;color:#333;font-size:0.8em}
-.colophon-title{font-size:1.4em;font-weight:bold;margin-bottom:1em}
-.colophon-list{display:grid;grid-template-columns:auto 1fr;column-gap:1.5em;row-gap:0.5em;margin:0}
+.colophon-box{width:70%;border-top:1px solid #333;border-bottom:1px solid #333;padding:1.2em 0;color:#333;font-size:0.8em;line-height:1.4}
+.colophon-title{font-size:1.4em;font-weight:bold;margin-bottom:0.8em}
+.colophon-list{display:grid;grid-template-columns:auto 1fr;column-gap:1.5em;row-gap:0.2em;margin:0}
 .colophon-list dt{font-weight:bold}
 .colophon-list dd{margin:0}
-.colophon-notes{margin-top:1em;font-size:0.9em;line-height:1.6;white-space:normal}
+.colophon-notes{margin-top:0.8em;font-size:0.9em;line-height:1.5;white-space:normal}
 .tcy{text-combine-upright:all;-webkit-text-combine:horizontal}
 ruby{ruby-align:center}rt{font-size:0.5em}
 .cover{display:flex;justify-content:center;align-items:center;height:100vh;margin:0;writing-mode:horizontal-tb;-webkit-writing-mode:horizontal-tb}
@@ -469,11 +469,18 @@ ${body}
 
     if (hasColophon) {
         const titleHtml = options.title ? `<div class="colophon-title">${escapeXml(options.title)}</div>` : ''
+        const publicationLine = (() => {
+            if (!options.publicationDate && !options.edition) return ''
+            const datePart = options.publicationDate ? escapeXml(options.publicationDate) : ''
+            const editionPart = options.edition ? escapeXml(options.edition) : ''
+            const combined = editionPart ? `${datePart}${datePart ? '　' : ''}${editionPart}` : datePart
+            return `<dt>発行日</dt><dd>${combined}</dd>`
+        })()
+
         const lines = [
             options.author ? `<dt>著　者</dt><dd>${escapeXml(options.author)}</dd>` : '',
             options.issuer ? `<dt>発行者</dt><dd>${escapeXml(options.issuer)}</dd>` : '',
-            options.publicationDate ? `<dt>発行日</dt><dd>${escapeXml(options.publicationDate)}</dd>` : '',
-            options.edition ? `<dt>版</dt><dd>${escapeXml(options.edition)}</dd>` : '',
+            publicationLine,
             options.publisher ? `<dt>発　行</dt><dd>${escapeXml(options.publisher)}</dd>` : '',
         ].filter(Boolean).join('\n')
         const notes = options.colophonNotes ? `<p class="colophon-notes">${formatColophonNotes(options.colophonNotes)}</p>` : ''
