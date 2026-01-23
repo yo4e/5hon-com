@@ -374,8 +374,8 @@ p{text-indent:1em;margin:0.5em 0}
 p.blank{margin:0.5em 0;min-height:1em;text-indent:0}
 p.no-indent{text-indent:0}
 .titlepage{display:flex;justify-content:center;align-items:center;height:100vh;margin:0;writing-mode:horizontal-tb;-webkit-writing-mode:horizontal-tb}
-.titlepage .titlebox{border:1px solid #333;padding:1.6em 2.4em;width:62%;min-height:70%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
-.titlepage .title{font-size:1.4em;font-weight:600;margin:0 0 0.5em 0;line-height:1.5}
+.titlepage .titlebox{border:1px solid #333;padding:1.6em 2.4em;width:auto;min-width:62%;max-width:88%;min-height:70%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.titlepage .title{font-size:1.4em;font-weight:600;margin:0 0 0.5em 0;line-height:1.5;text-wrap:balance;overflow-wrap:break-word}
 .titlepage .author{font-size:0.85em;margin:0}
 .tocpage{margin:3em 2em}
 .tocpage ol{list-style:none;padding:0;margin:0}
