@@ -56,7 +56,7 @@ const socialType = ogType ?? "website";
             Astro.url.pathname !== "/" && (
                 <header class="site-header">
                     <a href="/" class="site-branding">
-                        <span class="site-title">5hon.com</span>
+                        <span class="site-title brand-logo">5hon.com</span>
                     </a>
                 </header>
             )
@@ -173,10 +173,8 @@ const socialType = ogType ?? "website";
         text-decoration: none;
     }
     .site-title {
-        font-weight: 700;
-        font-size: 1.8rem; /* トップページのh1と同じくらいのサイズ感に */
-        letter-spacing: 0.02em;
-        color: var(--color-text);
+        font-size: 1.8rem;
+        /* font-weight/letter-spacing/color は .brand-logo で定義済み */
     }
     footer {
         text-align: center;
