@@ -9,8 +9,9 @@ interface Props {
     ogType?: string;
 }
 
+const props = (Astro.props as any).frontmatter || Astro.props;
 const { title, description, fullWidth, hideAd, canonical, ogImage, ogType } =
-    Astro.props;
+    props;
 import "../styles/global.css";
 
 const metaDescription =
