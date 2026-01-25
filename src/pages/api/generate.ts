@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import JSZip from 'jszip';
+import { Buffer } from 'node:buffer';
 
 interface RequestBody {
     url: string
@@ -275,7 +276,7 @@ async function buildEpub(
         tcyNumbers: boolean
         tcyLatin: boolean
         tocPage: boolean
-        coverImage?: { data: ArrayBuffer; type: 'jpeg' | 'png' }
+        coverImage?: { data: ArrayBuffer | Uint8Array; type: 'jpeg' | 'png' }
     }
 ): Promise<Uint8Array> {
     const zip = new JSZip()
@@ -586,7 +587,7 @@ export const POST: APIRoute = async (context) => {
             return errorResponse('PARSE_FAILED', 'ドキュメントの内容を解析できませんでした')
         }
 
-        let coverImage: { data: ArrayBuffer; type: 'jpeg' | 'png' } | undefined
+        let coverImage: { data: ArrayBuffer | Uint8Array; type: 'jpeg' | 'png' } | undefined
         if (body.coverBase64 && body.coverType) {
             if (body.coverType !== 'jpeg' && body.coverType !== 'png') {
                 return errorResponse('INVALID_COVER', '表紙画像の形式が不正です')
@@ -596,12 +597,8 @@ export const POST: APIRoute = async (context) => {
                 return errorResponse('COVER_TOO_LARGE', '表紙画像は5MB以下にしてください')
             }
             try {
-                const binary = atob(body.coverBase64)
-                const bytes = new Uint8Array(binary.length)
-                for (let i = 0; i < binary.length; i++) {
-                    bytes[i] = binary.charCodeAt(i)
-                }
-                coverImage = { data: bytes.buffer, type: body.coverType }
+                const bytes = Buffer.from(body.coverBase64, 'base64')
+                coverImage = { data: bytes, type: body.coverType }
             } catch {
                 // ignore
             }
