@@ -194,18 +194,12 @@ function shouldNoIndent(text: string): boolean {
 
 function convertTcy(text: string, options: { numbers: boolean; latin: boolean }): string {
     let result = text
-    const patterns: string[] = []
 
     if (options.numbers) {
-        patterns.push('[0-9]{1,4}')
+        result = applyTcyOutsideRuby(result, /[0-9]{1,4}/g)
     }
     if (options.latin) {
-        patterns.push('[A-Za-z!?.,:;@#$%&+*=/\\\\-]{1,4}')
-    }
-
-    if (patterns.length > 0) {
-        const combinedPattern = new RegExp(patterns.join('|'), 'g')
-        result = applyTcyOutsideRuby(result, combinedPattern)
+        result = applyTcyOutsideRuby(result, /[A-Za-z!?.,:;@#$%&+*=/\\-]{1,4}/g)
     }
 
     return result
