@@ -20,7 +20,7 @@ interface RequestBody {
 }
 
 interface ContentNode {
-    type: 'p' | 'h1' | 'h2' | 'h3'
+    type: 'p' | 'h1' | 'h2' | 'h3' | 'pagebreak'
     text: string
     isBlank?: boolean
     noIndent?: boolean
@@ -99,16 +99,28 @@ function parseGoogleDocHtml(html: string, title: string): { title: string; parag
 
     const paragraphs: ContentNode[] = []
 
-    // 見出しと段落を順番に抽出
-    const tagRegex = /<(h1|h2|h3|p)[^>]*>([\s\S]*?)<\/\1>/gi
+    // 改ページ、見出し、段落を順番に抽出
+    // Google Docsの改ページは <hr style="page-break-before:always..."> として出力される
+    const elementRegex = /<(hr|h1|h2|h3|p)([^>]*)>([\s\S]*?)?(?:<\/\1>)?/gi
     let match
-    while ((match = tagRegex.exec(cleaned)) !== null) {
-        const type = match[1].toLowerCase() as ContentNode['type']
-        const raw = match[2]
-        const text = stripHtml(raw)
+    while ((match = elementRegex.exec(cleaned)) !== null) {
+        const tagName = match[1].toLowerCase()
+        const attrs = match[2] || ''
+        const content = match[3] || ''
+
+        // hrタグで page-break スタイルを持つものは改ページとして処理
+        if (tagName === 'hr') {
+            if (/page-break/i.test(attrs)) {
+                paragraphs.push({ type: 'pagebreak', text: '' })
+            }
+            continue
+        }
+
+        const type = tagName as ContentNode['type']
+        const text = stripHtml(content)
         if (text.trim()) {
             paragraphs.push({ type, text: text.trim() })
-        } else if (type === 'p' && isBlankParagraph(raw)) {
+        } else if (type === 'p' && isBlankParagraph(content)) {
             paragraphs.push({ type, text: '', isBlank: true })
         }
     }
@@ -284,6 +296,10 @@ async function buildEpub(
 
     // まずテキストをエスケープしてからルビ・縦中横変換
     const processed = paragraphs.map((p) => {
+        // 改ページはそのまま返す
+        if (p.type === 'pagebreak') {
+            return { ...p, text: '', noIndent: false }
+        }
         if (p.isBlank) {
             return { ...p, text: '<br/>', noIndent: false }
         }
@@ -383,6 +399,7 @@ ${tocItemsRich}
 
     // style.css
     zip.file('OEBPS/style.css', `html{writing-mode:vertical-rl;-webkit-writing-mode:vertical-rl}
+.pagebreak{page-break-before:always;-webkit-column-break-before:always;break-before:page;height:0;margin:0;padding:0}
 body{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:1em;line-height:1.8;margin:2em;text-align:justify}
 h1{font-size:1.4em;font-weight:bold;margin:2em 1em 1em}
 h2{font-size:1.3em;font-weight:bold;margin:1.5em 0.5em}
@@ -448,6 +465,10 @@ ruby{ruby-align:center}rt{font-size:0.5em}
     // content.xhtml
     let tocIdx = 0
     const body = processed.map((p) => {
+        // 改ページはdivで出力
+        if (p.type === 'pagebreak') {
+            return '<div class="pagebreak"></div>'
+        }
         if (p.type === 'h1' || p.type === 'h2' || p.type === 'h3') {
             return `<${p.type} id="toc-${tocIdx++}">${p.text}</${p.type}>`
         }
