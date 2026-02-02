@@ -97,36 +97,53 @@ function parseGoogleDocHtml(html: string, title: string): { title: string; parag
         .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
         .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
 
+    // 改ページ（hrタグ）をプレースホルダに置換
+    // Google Docsでは <hr style="page-break-before:always;display:none;"> の形式で出力される
+    const PAGE_BREAK_MARKER = '\u0000PAGEBREAK\u0000'
+    const withPageBreaks = cleaned.replace(/<hr[^>]*style="[^"]*page-break[^"]*"[^>]*>/gi, PAGE_BREAK_MARKER)
+
+    // デバッグログ
+    const pageBreakCount = (withPageBreaks.match(new RegExp(PAGE_BREAK_MARKER.replace(/\u0000/g, '\\u0000'), 'g')) || []).length
+    console.log(`Page breaks detected: ${pageBreakCount}`)
+
     const paragraphs: ContentNode[] = []
 
-    // 改ページ、見出し、段落を順番に抽出
-    // Google Docsの改ページは <hr style="page-break-before:always..."> として出力される
-    const elementRegex = /<(hr|h1|h2|h3|p)([^>]*)>([\s\S]*?)?(?:<\/\1>)?/gi
+    // 見出しと段落を順番に抽出
+    const tagRegex = /<(h1|h2|h3|p)[^>]*>([\s\S]*?)<\/\1>/gi
     let match
-    while ((match = elementRegex.exec(cleaned)) !== null) {
-        const tagName = match[1].toLowerCase()
-        const attrs = match[2] || ''
-        const content = match[3] || ''
+    while ((match = tagRegex.exec(withPageBreaks)) !== null) {
+        const type = match[1].toLowerCase() as ContentNode['type']
+        const raw = match[2]
 
-        // hrタグで page-break スタイルを持つものは改ページとして処理
-        if (tagName === 'hr') {
-            if (/page-break/i.test(attrs)) {
-                paragraphs.push({ type: 'pagebreak', text: '' })
+        // 改ページマーカーがこの段落内にあるかチェック
+        if (raw.includes(PAGE_BREAK_MARKER)) {
+            // マーカーで分割して処理
+            const parts = raw.split(PAGE_BREAK_MARKER)
+            parts.forEach((part, index) => {
+                // 改ページを挿入（最初のパート以外の前に）
+                if (index > 0) {
+                    paragraphs.push({ type: 'pagebreak', text: '' })
+                }
+                // テキスト部分を処理
+                const text = stripHtml(part)
+                if (text.trim()) {
+                    paragraphs.push({ type, text: text.trim() })
+                } else if (type === 'p' && isBlankParagraph(part)) {
+                    paragraphs.push({ type, text: '', isBlank: true })
+                }
+            })
+        } else {
+            const text = stripHtml(raw)
+            if (text.trim()) {
+                paragraphs.push({ type, text: text.trim() })
+            } else if (type === 'p' && isBlankParagraph(raw)) {
+                paragraphs.push({ type, text: '', isBlank: true })
             }
-            continue
-        }
-
-        const type = tagName as ContentNode['type']
-        const text = stripHtml(content)
-        if (text.trim()) {
-            paragraphs.push({ type, text: text.trim() })
-        } else if (type === 'p' && isBlankParagraph(content)) {
-            paragraphs.push({ type, text: '', isBlank: true })
         }
     }
 
     if (paragraphs.length === 0) {
-        const plainText = stripHtml(cleaned)
+        const plainText = stripHtml(withPageBreaks)
         if (plainText.trim()) {
             plainText.split(/\n+/).forEach((line) => {
                 if (line.trim()) {
