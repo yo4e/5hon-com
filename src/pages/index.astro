@@ -239,8 +239,9 @@ import Layout from "../layouts/Layout.astro";
             </aside>
         </div>
     </div>
-    <script type="application/ld+json">
-        {JSON.stringify({
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             name: "5hon.com",
@@ -254,7 +255,7 @@ import Layout from "../layouts/Layout.astro";
                 priceCurrency: "JPY",
             },
         })}
-    </script>
+    />
     <script>
         const urlInput = document.getElementById('doc-url') as HTMLInputElement;
         const titleInput = document.getElementById('book-title') as HTMLInputElement;
