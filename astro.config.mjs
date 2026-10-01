@@ -7,5 +7,6 @@ export default defineConfig({
   output: 'server',
   adapter: cloudflare(),
   site: 'https://5hon.com',
+  trailingSlash: 'never',
   integrations: [sitemap()],
 });
