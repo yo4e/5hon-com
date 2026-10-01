@@ -177,6 +177,23 @@ import Layout from "../layouts/Layout.astro";
                         <p style="margin-top: 0.8rem; font-size: 0.85rem; color: var(--color-text-muted); text-align: right;">
                             ダウンロードしたEPUBはApple BooksなどのEPUBリーダーで読めます
                         </p>
+                        <div
+                            id="success-support"
+                            hidden
+                            style="margin-top: 1.2rem; padding: 1rem 1.2rem; border: 1px dashed var(--color-border); border-radius: 12px; text-align: center; font-size: 0.9rem;"
+                        >
+                            <p style="margin: 0 0 0.6rem;">
+                                EPUBができました！ 役に立ったら、5hon.comの維持を応援してもらえるとうれしいです。
+                            </p>
+                            <a
+                                href="https://ko-fi.com/yo4e"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style="font-weight: 700;"
+                            >
+                                ☕ このサイトのドメイン代をおごる
+                            </a>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -276,6 +293,7 @@ import Layout from "../layouts/Layout.astro";
         const loadingSpinner = document.getElementById('loading-spinner') as HTMLSpanElement;
         const generateText = document.getElementById('generate-text') as HTMLSpanElement;
         const downloadLink = document.getElementById('download-link') as HTMLAnchorElement;
+        const successSupport = document.getElementById('success-support') as HTMLDivElement;
 
         let coverFile: File | null = null;
         let downloadUrl: string | null = null;
@@ -301,6 +319,7 @@ import Layout from "../layouts/Layout.astro";
                 downloadUrl = null;
             }
             downloadLink.hidden = true;
+            successSupport.hidden = true;
         };
 
         const getFilenameFromDisposition = (headerValue: string | null) => {
@@ -425,6 +444,7 @@ import Layout from "../layouts/Layout.astro";
                 const clientFilename = `${toSafeFilename(titleInput.value || 'output')}.epub`;
                 downloadLink.download = serverFilename || clientFilename;
                 downloadLink.hidden = false;
+                successSupport.hidden = false;
             } catch (error) {
                 setError(error instanceof Error ? error.message : 'EPUB生成に失敗しました。URLを確認してやり直してください。');
             } finally {
